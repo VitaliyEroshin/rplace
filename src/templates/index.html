@@ -5,7 +5,12 @@
         <script src="{{ url_for('static',filename='scripts/script.js') }}"></script>
     </head>
     <body>
-        <img src="{{ url_for('static',filename='source/map/0_0.png') }}" id="map">
+        <div id="mapDiv">
+            <!-- <img src="static/source/map/0_0.png" class="map"> -->
+            <!-- <img src="static/source/map/0_0.png" class="map" id="map"> -->
+            <!-- <img src="{{ url_for('static',filename='source/map/0_0.png') }}" class="map" id="map"> -->
+        </div>
+        
         <img src="{{ url_for('static',filename='source/cursor.png') }}" id="cursor">
 
         <div id="settings">

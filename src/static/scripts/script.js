@@ -1,4 +1,11 @@
 
+let map_pieces_x = 2
+let map_pieces_y = 2
+let map_piece_size_x = 128
+let map_piece_size_y = 128
+
+var pieces = Array(map_pieces_x).fill(null).map(() => Array(map_pieces_y));
+
 var map;
 var cursorIcon;
 var cursorX;
@@ -13,6 +20,18 @@ var pixelsOnScreenY = window.innerHeight / pixelSize;
 var pixelsOnScreenXdiv2 = parseInt(pixelsOnScreenX / 2);
 var pixelsOnScreenYdiv2 = parseInt(pixelsOnScreenY / 2);
 var cursorPosition = document.getElementById('cursorPosition');
+
+function load_piece(x, y) {
+    img = document.createElement('img');
+    img.src = "static/source/map/" + x + "_" + y + ".png";
+    img.classList.add("map");
+    img.setAttribute("id", x + "_" + y);
+    img.width = map_piece_size_x;
+    img.height = map_piece_size_y;
+    document.getElementById("mapDiv").appendChild(img);
+    pieces[x][y] = document.getElementById(x + "_" + y);
+    // pieces[x][y].style.display = "none";
+}
 
 function cursorUpdate() {
     cursorIcon.style.left = (pixelsOnScreenXdiv2 * pixelSize) + "px";
@@ -29,6 +48,21 @@ function mapScaleSetOffset() {
     // TODO: Fancy animation
 }
 
+function pieceScaleOffset(x, y) {
+    var pivotLocationX = -1 * (cursorX - pixelsOnScreenXdiv2);
+    var pivotLocationY = -1 * (cursorY - pixelsOnScreenYdiv2);
+    pivotLocationX += x * map_piece_size_x;
+    pivotLocationY += y * map_piece_size_y;
+    
+    pieces[x][y].style.left = (pivotLocationX * pixelSize) + "px";
+    pieces[x][y].style.top = (pivotLocationY * pixelSize) + "px";
+}
+
+function pieceScale(x, y) {
+    pieces[x][y].width = mapInitialSizeX / map_pieces_x * pixelSize;
+    pieces[x][y].height = mapInitialSizeY / map_pieces_y * pixelSize;
+}
+
 function mapScale(value) {
     pixelSize = value;
     pixelsOnScreenX = window.innerWidth / pixelSize;
@@ -39,9 +73,13 @@ function mapScale(value) {
     setCookie("pixelSize", pixelSize, {'max-age': 3600});
     moveStep = parseInt(32 / pixelSize);
 
-    map.width = mapInitialSizeX * pixelSize;
-    map.height = mapInitialSizeY * pixelSize;
-    mapScaleSetOffset();
+    for (var i = 0; i < map_pieces_x; i++) {
+        for (var j = 0; j < map_pieces_y; j++) {
+            pieceScale(i, j);
+            pieceScaleOffset(i, j);
+        }
+    }
+    
     cursorUpdate()
 }
 
@@ -65,15 +103,20 @@ function moveBy(x, y) {
     cursorY = targetY;
     setCookie("cursorY", cursorY, {'max-age': 3600});
 
-    mapScaleSetOffset(pixelSize);
+    for (var i = 0; i < map_pieces_x; i++) {
+        for (var j = 0; j < map_pieces_y; j++) {
+            pieceScaleOffset(i, j);
+        }
+    }
+    // mapScaleSetOffset(pixelSize);
     cursorPosition.textContent = "(" + cursorX + ", " + cursorY + ")";
 }
 
 function mapInit() {
     cursorPosition = document.getElementById("cursorPosition");
     map = document.getElementById('map');
-    mapInitialSizeX = map.width;
-    mapInitialSizeY = map.height;
+    mapInitialSizeX = map_piece_size_x * map_pieces_x;
+    mapInitialSizeY = map_piece_size_y * map_pieces_y;
 
     cursorIcon = document.getElementById('cursor');
 
@@ -99,7 +142,11 @@ function mapInit() {
 
 window.onload = function() {
     // init map settings.
-    
+    for (var i = 0; i < map_pieces_x; i++) {
+        for (var j = 0; j < map_pieces_y; j++) {
+            load_piece(i, j);
+        }
+    }
     mapInit();
 }
 
