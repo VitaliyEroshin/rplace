@@ -9,7 +9,7 @@ address = "127.0.0.1"
 port = 5000
 
 app = flask.Flask(__name__)
-canvas = Canvas(2, 2)
+canvas = Canvas(15, 15)
 
 @app.route('/index')
 @app.route('/')

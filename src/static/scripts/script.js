@@ -1,6 +1,6 @@
 
-let map_pieces_x = 2
-let map_pieces_y = 2
+let map_pieces_x = 15
+let map_pieces_y = 15
 let map_piece_size_x = 128
 let map_piece_size_y = 128
 
@@ -21,9 +21,13 @@ var pixelsOnScreenXdiv2 = parseInt(pixelsOnScreenX / 2);
 var pixelsOnScreenYdiv2 = parseInt(pixelsOnScreenY / 2);
 var cursorPosition = document.getElementById('cursorPosition');
 
+function get_piece_src(x, y) {
+    return "static/source/map/row-" + (y + 1) + "-column-" + (x + 1) + ".png";
+}
+
 function load_piece(x, y) {
     img = document.createElement('img');
-    img.src = "static/source/map/" + x + "_" + y + ".png";
+    img.src = get_piece_src(x, y);
     img.classList.add("map");
     img.setAttribute("id", x + "_" + y);
     img.width = map_piece_size_x;
@@ -53,7 +57,6 @@ function pieceScaleOffset(x, y) {
     var pivotLocationY = -1 * (cursorY - pixelsOnScreenYdiv2);
     pivotLocationX += x * map_piece_size_x;
     pivotLocationY += y * map_piece_size_y;
-    
     pieces[x][y].style.left = (pivotLocationX * pixelSize) + "px";
     pieces[x][y].style.top = (pivotLocationY * pixelSize) + "px";
 }
@@ -97,11 +100,14 @@ function moveBy(x, y) {
     } else if (targetY >= mapInitialSizeY) {
         targetY = mapInitialSizeY - 1;
     }
+
     cursorX = targetX;
     setCookie("cursorX", cursorX, {'max-age': 3600});
 
     cursorY = targetY;
     setCookie("cursorY", cursorY, {'max-age': 3600});
+
+    
 
     for (var i = 0; i < map_pieces_x; i++) {
         for (var j = 0; j < map_pieces_y; j++) {
@@ -169,7 +175,7 @@ document.addEventListener('keydown', (event) => {
 function updateCell(x, y) {
     var cell_x = parseInt(x / map_piece_size_x);
     var cell_y = parseInt(y / map_piece_size_y);
-    pieces[cell_x][cell_y].src = "static/source/map/" + cell_x + "_" + cell_y + ".png?random="+new Date().getTime();
+    pieces[cell_x][cell_y].src = get_piece_src(cell_x, cell_y) + "?random=" + new Date().getTime();
 }
 
 function fillTheCell() {

@@ -9,7 +9,7 @@ class Canvas():
         self.piece_size_y = 128
 
     def get_filename(self, x, y):
-        return str(x) + "_" + str(y) + ".png"
+        return "row-" + str(y + 1) + "-column-" + str(x + 1) + ".png"
 
     def load(self, x, y):
         self.images[x][y] = Image.open(self.path + self.get_filename(x, y))
