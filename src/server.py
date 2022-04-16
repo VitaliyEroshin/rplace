@@ -1,6 +1,6 @@
 import flask
 from flask import request, redirect, send_file
-from PIL import Image
+from PIL import Image, ImageColor
 from io import BytesIO
 from canvas import Canvas
 import random
@@ -21,7 +21,7 @@ def index():
 @app.route('/submit', methods=['POST'])
 def paint():
     data = request.json
-    canvas.set_cell(data['x'], data['y'])
+    canvas.set_cell(data['x'], data['y'], ImageColor.getcolor(data['color'], "RGB"))
     return "OK"
 
 if __name__ == '__main__':

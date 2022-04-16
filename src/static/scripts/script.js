@@ -107,7 +107,7 @@ function moveBy(x, y) {
     cursorY = targetY;
     setCookie("cursorY", cursorY, {'max-age': 3600});
 
-    
+
 
     for (var i = 0; i < map_pieces_x; i++) {
         for (var j = 0; j < map_pieces_y; j++) {
@@ -183,7 +183,8 @@ function fillTheCell() {
     xhr.open("POST", '/submit', true);
 
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    let data = JSON.stringify({"x" : cursorX, "y" : cursorY});
+    var color = document.getElementById("color").value;
+    let data = JSON.stringify({"x" : cursorX, "y" : cursorY, "color" : color});
     xhr.onload = function () {
         if (xhr.readyState === xhr.DONE) {
             if (xhr.status === 200) {
