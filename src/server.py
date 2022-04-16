@@ -22,7 +22,7 @@ def index():
 def paint():
     data = request.json
     canvas.set_cell(data['x'], data['y'])
-    return redirect('/')
+    return "OK"
 
 if __name__ == '__main__':
     app.run(address, port, debug=True)

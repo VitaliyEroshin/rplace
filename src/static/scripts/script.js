@@ -86,16 +86,16 @@ function mapScale(value) {
 function moveBy(x, y) {
     var targetX = cursorX + x;
     var targetY = cursorY + y;
-    if (targetX * 2 < pixelsOnScreenX) {
-        targetX = pixelsOnScreenXdiv2;
-    } else if (2 * targetX + pixelsOnScreenX > 2 * mapInitialSizeX) {
-        targetX = mapInitialSizeX - pixelsOnScreenXdiv2;
+    if (targetX < 0) {
+        targetX = 0;
+    } else if (targetX >= mapInitialSizeX) {
+        targetX = mapInitialSizeX - 1;
     }
 
-    if (targetY * 2 < pixelsOnScreenY) {
-        targetY = pixelsOnScreenYdiv2;
-    } else if (2 * targetY + pixelsOnScreenY > 2 * mapInitialSizeY) {
-        targetY = mapInitialSizeY - pixelsOnScreenYdiv2;
+    if (targetY < 0) {
+        targetY = 0;
+    } else if (targetY >= mapInitialSizeY) {
+        targetY = mapInitialSizeY - 1;
     }
     cursorX = targetX;
     setCookie("cursorX", cursorX, {'max-age': 3600});
@@ -166,12 +166,26 @@ document.addEventListener('keydown', (event) => {
     }
 });
 
+function updateCell(x, y) {
+    var cell_x = parseInt(x / map_piece_size_x);
+    var cell_y = parseInt(y / map_piece_size_y);
+    pieces[cell_x][cell_y].src = "static/source/map/" + cell_x + "_" + cell_y + ".png?random="+new Date().getTime();
+}
+
 function fillTheCell() {
     let xhr = new XMLHttpRequest();
     xhr.open("POST", '/submit', true);
 
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     let data = JSON.stringify({"x" : cursorX, "y" : cursorY});
+    xhr.onload = function () {
+        if (xhr.readyState === xhr.DONE) {
+            if (xhr.status === 200) {
+                updateCell(cursorX, cursorY);
+            }
+        }
+    };
+
     xhr.send(data);
 }
 
