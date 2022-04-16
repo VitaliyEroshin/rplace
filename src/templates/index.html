@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static',filename='styles/styles.css') }}">
+        <script src="{{ url_for('static',filename='scripts/script.js') }}"></script>
+    </head>
+    <body>
+        <img src="{{ url_for('static',filename='source/map.png') }}" id="map">
+        <img src="{{ url_for('static',filename='source/cursor.png') }}" id="cursor">
+
+        <div id="settings">
+            <button onclick="load()"> Load map</button>
+            <input 
+                type="range" 
+                id="mapSize" 
+                name="size" 
+                min="2" 
+                max="32"
+                value="2"
+                oninput="mapScale(this.value)" 
+                onchange="mapScale(this.value)"
+            >
+
+            <p id="cursorPosition">(0, 0)</p>
+        </div>
+    </body>
+</html>
