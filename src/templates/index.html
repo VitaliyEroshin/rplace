@@ -9,7 +9,7 @@
         <img src="{{ url_for('static',filename='source/cursor.png') }}" id="cursor">
 
         <div id="settings">
-            <button onclick="load()"> Load map</button>
+            <button onclick="load()"> load map</button>
             <input 
                 type="range" 
                 id="mapSize" 
@@ -22,6 +22,8 @@
             >
 
             <p id="cursorPosition">(0, 0)</p>
+
+            <button onclick="clearCookies()">clear cookies</button>
         </div>
     </body>
 </html>

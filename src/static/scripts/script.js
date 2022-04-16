@@ -1,3 +1,4 @@
+
 var map;
 var cursorIcon;
 var cursorX;
@@ -35,6 +36,7 @@ function mapScale(value) {
     pixelsOnScreenXdiv2 = parseInt(pixelsOnScreenX / 2)
     pixelsOnScreenYdiv2 = parseInt(pixelsOnScreenY / 2)
 
+    setCookie("pixelSize", pixelSize, {'max-age': 3600});
     moveStep = parseInt(32 / pixelSize);
 
     map.width = mapInitialSizeX * pixelSize;
@@ -58,24 +60,46 @@ function moveBy(x, y) {
         targetY = mapInitialSizeY - pixelsOnScreenYdiv2;
     }
     cursorX = targetX;
+    setCookie("cursorX", cursorX, {'max-age': 3600});
+
     cursorY = targetY;
+    setCookie("cursorY", cursorY, {'max-age': 3600});
+
     mapScaleSetOffset(pixelSize);
     cursorPosition.textContent = "(" + cursorX + ", " + cursorY + ")";
 }
 
 function mapInit() {
+    cursorPosition = document.getElementById("cursorPosition");
     map = document.getElementById('map');
-    cursorIcon = document.getElementById('cursor');
-
     mapInitialSizeX = map.width;
     mapInitialSizeY = map.height;
-    cursorX = parseInt(mapInitialSizeX / 2);
-    cursorY = parseInt(mapInitialSizeY / 2);
-    mapScale(2);
+
+    cursorIcon = document.getElementById('cursor');
+
+    pixelSize = parseInt(getCookie("pixelSize"))
+    if (isNaN(pixelSize)) {
+        pixelSize = 2;
+    }
+
+    document.getElementById("mapSize").value = pixelSize;
+
+    cursorX = parseInt(getCookie("cursorX"));
+    if (isNaN(cursorX)) {
+        cursorX = parseInt(mapInitialSizeX / 2);
+    }
+
+    cursorY = parseInt(getCookie("cursorY"));
+    if (isNaN(cursorY)) {
+        cursorY = parseInt(mapInitialSizeY / 2);
+    }
+
+    mapScale(pixelSize);
 }
 
 window.onload = function() {
     // init map settings.
+    
     mapInit();
 }
 
@@ -90,5 +114,50 @@ document.addEventListener('keydown', (event) => {
         moveBy(0, -moveStep);
     } else if (keyName == "ArrowDown") {
         moveBy(0, moveStep);
+    } else if (keyName == "Enter") {
+        
     }
 });
+
+function getCookie(name) {
+    let matches = document.cookie.match(new RegExp(
+        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+    ));
+    return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+  
+function setCookie(name, value, options = {}) {
+    options = {
+        path: '/',
+        ...options
+    };
+  
+    if (options.expires instanceof Date) {
+        options.expires = options.expires.toUTCString();
+    }
+  
+    let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+  
+    for (let optionKey in options) {
+        updatedCookie += "; " + optionKey;
+        let optionValue = options[optionKey];
+        if (optionValue !== true) {
+            updatedCookie += "=" + optionValue;
+        }
+    }
+  
+    document.cookie = updatedCookie;
+}
+  
+  
+function deleteCookie(name) {
+    setCookie(name, "", {
+        'max-age': -1
+    })
+}
+
+function clearCookies() {
+    deleteCookie("cursorX");
+    deleteCookie("cursorY");
+    deleteCookie("pixelSize");
+}
