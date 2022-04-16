@@ -115,9 +115,18 @@ document.addEventListener('keydown', (event) => {
     } else if (keyName == "ArrowDown") {
         moveBy(0, moveStep);
     } else if (keyName == "Enter") {
-        
+        fillTheCell();
     }
 });
+
+function fillTheCell() {
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", '/submit', true);
+
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    let data = JSON.stringify({"x" : cursorX, "y" : cursorY});
+    xhr.send(data);
+}
 
 function getCookie(name) {
     let matches = document.cookie.match(new RegExp(
