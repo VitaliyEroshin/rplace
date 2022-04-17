@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div>
+    <h3> Register a new account. </h3>
+    <div>
+        <p>
+            {{verdict}}
+        </p>
+        <form method="POST" action="/signup">
+            <div>
+                <div>
+                    <input type="login" name="login" placeholder="Your Login" autofocus="">
+                </div>
+            </div>
+
+            <div>
+                <div>
+                    <input type="password" name="password" placeholder="Your Password">
+                </div>
+            </div>
+            <button> SignUp </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -20,6 +20,7 @@ var pixelsOnScreenY = window.innerHeight / pixelSize;
 var pixelsOnScreenXdiv2 = parseInt(pixelsOnScreenX / 2);
 var pixelsOnScreenYdiv2 = parseInt(pixelsOnScreenY / 2);
 var cursorPosition = document.getElementById('cursorPosition');
+var token = null;
 
 function get_piece_src(x, y) {
     return "static/source/map/row-" + (y + 1) + "-column-" + (x + 1) + ".png";
@@ -146,7 +147,17 @@ function mapInit() {
     mapScale(pixelSize);
 }
 
+function uiInit() {
+    if (token == null) {
+
+    } else {
+
+    }
+}
+
 window.onload = function() {
+    token = getCookie("token");
+    uiInit();
     // init map settings.
     for (var i = 0; i < map_pieces_x; i++) {
         for (var j = 0; j < map_pieces_y; j++) {
@@ -178,13 +189,26 @@ function updateCell(x, y) {
     pieces[cell_x][cell_y].src = get_piece_src(cell_x, cell_y) + "?random=" + new Date().getTime();
 }
 
+function askUserToLogin() {
+    alert("To place cells you need to authorize first.")
+}
+
 function fillTheCell() {
+    if (token == null) {
+        askUserToLogin()
+        return;
+    }
     let xhr = new XMLHttpRequest();
     xhr.open("POST", '/submit', true);
 
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     var color = document.getElementById("color").value;
-    let data = JSON.stringify({"x" : cursorX, "y" : cursorY, "color" : color});
+    let data = JSON.stringify({
+        "x" : cursorX, 
+        "y" : cursorY, 
+        "color" : color,
+        "token" : token
+    });
     xhr.onload = function () {
         if (xhr.readyState === xhr.DONE) {
             if (xhr.status === 200) {
@@ -225,8 +249,7 @@ function setCookie(name, value, options = {}) {
   
     document.cookie = updatedCookie;
 }
-  
-  
+
 function deleteCookie(name) {
     setCookie(name, "", {
         'max-age': -1
@@ -237,4 +260,5 @@ function clearCookies() {
     deleteCookie("cursorX");
     deleteCookie("cursorY");
     deleteCookie("pixelSize");
+    deleteCookie("token");
 }
