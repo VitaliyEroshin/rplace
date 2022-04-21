@@ -66,6 +66,7 @@ class Database():
             return False
 
         id = self.getUserCount()
+        self.usercount += 1
         self.addUserData(id, login, password)
         self.addUserToken(self.getHash(login, password), id)
 
