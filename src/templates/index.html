@@ -1,35 +1,58 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <link rel="stylesheet" href="{{ url_for('static',filename='styles/styles.css') }}">
-        <script src="{{ url_for('static',filename='scripts/script.js') }}"></script>
-    </head>
-    <body>
-        <div id="mapDiv">
-            <!-- <img src="static/source/map/0_0.png" class="map"> -->
-            <!-- <img src="static/source/map/0_0.png" class="map" id="map"> -->
-            <!-- <img src="{{ url_for('static',filename='source/map/0_0.png') }}" class="map" id="map"> -->
-        </div>
-        
-        <img src="{{ url_for('static',filename='source/cursor.png') }}" id="cursor">
+  <head>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static',filename='styles/styles.css') }}"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@100;200;300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="{{ url_for('static',filename='scripts/script.js') }}"></script>
+  </head>
+  <body>
+    <div id="mapDiv">
+    </div>
 
-        <div id="settings">
-            <input type="color" id="color" value="#FFFFFF">
-            <label for="color"> color </label>
-            <input 
-                type="range" 
-                id="mapSize" 
-                name="size" 
-                min="2" 
-                max="32"
-                value="2"
-                oninput="mapScale(this.value)" 
-                onchange="mapScale(this.value)"
-            >
+    <img
+      src="{{ url_for('static',filename='source/cursor.png') }}"
+      id="cursor"
+    />
 
-            <p id="cursorPosition">(0, 0)</p>
+    <div id="settings">
+      <input
+        type="range"
+        id="mapSize"
+        name="size"
+        min="2"
+        max="32"
+        value="2"
+        oninput="mapScale(this.value)"
+        onchange="mapScale(this.value)"
+      />
+      <div class="color_container">
+        <label id="color_label">change color -></label>
+        <input type="color" id="color" value="#414345" />
+      </div>
 
-            <button onclick="clearCookies()">clear cookies</button>
-        </div>
-    </body>
+      <div class="buttons">
+        <a href="signin" class="list__btn btn btn_g">
+          <div class="title">
+            <span>signin</span>
+          </div>
+        </a>
+        <a href="signup" class="list__btn btn btn_g">
+          <div class="title">
+            <span>signup</span>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="sub_settings">
+      <p id="cursorPosition">(0, 0)</p>
+    </div>
+  </body>
 </html>
