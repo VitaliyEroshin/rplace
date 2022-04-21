@@ -1,8 +1,8 @@
 
-let map_pieces_x = 15
-let map_pieces_y = 15
-let map_piece_size_x = 128
-let map_piece_size_y = 128
+let map_pieces_x = 7
+let map_pieces_y = 7
+let map_piece_size_x = 256
+let map_piece_size_y = 256
 
 var pieces = Array(map_pieces_x).fill(null).map(() => Array(map_pieces_y));
 
@@ -28,14 +28,13 @@ function get_piece_src(x, y) {
 
 function load_piece(x, y) {
     img = document.createElement('img');
-    img.src = get_piece_src(x, y);
+    img.src = get_piece_src(x, y) + "?random=" + new Date().getTime();
     img.classList.add("map");
     img.setAttribute("id", x + "_" + y);
     img.width = map_piece_size_x;
     img.height = map_piece_size_y;
     document.getElementById("mapDiv").appendChild(img);
     pieces[x][y] = document.getElementById(x + "_" + y);
-    // pieces[x][y].style.display = "none";
 }
 
 function cursorUpdate() {
@@ -115,7 +114,6 @@ function moveBy(x, y) {
             pieceScaleOffset(i, j);
         }
     }
-    // mapScaleSetOffset(pixelSize);
     cursorPosition.textContent = "(" + cursorX + ", " + cursorY + ")";
 }
 
@@ -178,7 +176,7 @@ document.addEventListener('keydown', (event) => {
         moveBy(0, -moveStep);
     } else if (keyName == "ArrowDown") {
         moveBy(0, moveStep);
-    } else if (keyName == "Enter") {
+    } else if (keyName == "Enter" || keyName == " ") {
         fillTheCell();
     }
 });

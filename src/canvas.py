@@ -5,8 +5,8 @@ class Canvas():
     def __init__(self, size_x, size_y):
         self.images = [[None] * size_x for _ in range(size_y)]
         self.path = "./static/source/map/"
-        self.piece_size_x = 128
-        self.piece_size_y = 128
+        self.piece_size_x = 256
+        self.piece_size_y = 256
 
     def get_filename(self, x, y):
         return "row-" + str(y + 1) + "-column-" + str(x + 1) + ".png"
