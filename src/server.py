@@ -6,11 +6,11 @@ from canvas import Canvas
 from database import Database
 import random
 
-address = "127.0.0.1"
-port = 5000
+address = "0.0.0.0"
+port = 8888
 
 app = flask.Flask(__name__)
-canvas = Canvas(15, 15)
+canvas = Canvas(7, 7)
 db = Database()
 
 @app.route('/signin', methods=['GET'])
@@ -21,6 +21,12 @@ def signInPage():
 
 @app.route('/signin', methods=['POST'])
 def signIn():
+    if not checkDDOS(request.remote_addr, 5000):
+        return flask.render_template(
+            'auth/signin.html',
+            verdict="You will not ddos my server."
+        )
+
     login = request.form.get('login')
     password = request.form.get('password')
     if (not login) or (not password):
@@ -61,6 +67,12 @@ def signUpPage():
 
 @app.route('/signup', methods=['POST'])
 def signUp():
+    if not checkDDOS(request.remote_addr, 5000):
+        return flask.render_template(
+            'auth/signup.html',
+            verdict="You will not ddos my server."
+        )
+
     login = request.form.get('login')
     password = request.form.get('password')
 
@@ -95,8 +107,28 @@ def index():
         'index.html'
     )
 
+import time
+
+def current_milli_time():
+    return round(time.time() * 1000)
+
+lastRequestTime = {}
+def checkDDOS(address, timelimit):
+    t = current_milli_time()
+    if address in lastRequestTime:
+        prev = lastRequestTime[address]
+        if (t - prev < timelimit):
+            lastRequestTime[address] = t
+            return False
+
+    lastRequestTime[address] = t
+    return True
+
 @app.route('/submit', methods=['POST'])
 def paint():
+    if not checkDDOS(request.remote_addr, 200):
+        return "NO"
+
     data = request.json
     if not 'token' in data:
         print('wrong token')
