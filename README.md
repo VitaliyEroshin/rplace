@@ -31,6 +31,9 @@ Flask will show you **ip & port** where your server listens on
 
 Next step: have fun! 🥳
 
+## Controls
+Use ```Arrows``` to move around the map and ```Space```/```Enter``` to place the color. 
+
 ## How to setup database?
 Firstly, make sure you remove/renamed old database (```src/data.db```). Otherwise - it will drop the exception and do nothing. Next step is setting up the table. There is no special script for that. But it is as easy as that:
 ```
