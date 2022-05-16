@@ -44,14 +44,32 @@ def rgbToHex(rgb):
     return '#%02x%02x%02x' % rgb
 
 
+def paintByLebeg(height, width):
+    painted = 0
+
+    for dy in range(height):
+        for dx in range(width):
+            painted += 1
+            print(painted, '/', height * width)
+            yield (dy, dx)
+
+
+def paintByRiman(height, width):
+    painted = 0
+
+    for dx in range(width):
+        for dy in range(height):
+            painted += 1
+            print(painted, '/', height * width)
+            yield (dy, dx)
+
+
 def paintImage(x, y, image):
-    for dy in range(len(image)):
-        for dx in range(len(image[0])):
-            print(dy * len(image[0]) + dx, '/', len(image) * len(image[0]))
-            color = image[dy][dx]
-            color = rgbToHex(tuple(color))
-            time.sleep(delay)
-            paintCell(x + dx, y + dy, color)
+    for (dy, dx) in paintByLebeg(len(image), len(image[0])):
+        color = image[dy][dx]
+        color = rgbToHex(tuple(color))
+        time.sleep(delay)
+        paintCell(x + dx, y + dy, color)
 
 
 def loadImage(path):
