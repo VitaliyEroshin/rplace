@@ -1,6 +1,6 @@
 
-let map_pieces_x = 7
-let map_pieces_y = 7
+let map_pieces_x = 2
+let map_pieces_y = 2
 let map_piece_size_x = 256
 let map_piece_size_y = 256
 

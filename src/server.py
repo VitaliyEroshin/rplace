@@ -10,7 +10,7 @@ address = "0.0.0.0"
 port = 8888
 
 app = flask.Flask(__name__)
-canvas = Canvas(7, 7)
+canvas = Canvas(2, 2)
 db = Database()
 
 @app.route('/signin', methods=['GET'])
