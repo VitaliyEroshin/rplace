@@ -1,0 +1,39 @@
+{% extends "base.html" %} {% block body %}
+
+<link
+  rel="stylesheet"
+  href="{{ url_for('static',filename='styles/signin.css') }}"
+/>
+<div class="form">
+  <div class="form-title">Welcome</div>
+  <div class="subtitle">Sign in to pixel battle</div>
+  <form method="POST" action="/signin">
+    <div class="input-container ic1">
+      <input
+        id="firstname"
+        class="input"
+        method="POST"
+        action="/signup"
+        type="login"
+        name="login"
+        placeholder=" "
+      />
+      <div class="cut"></div>
+      <label for="firstname" class="placeholder">Your login</label>
+    </div>
+    <div class="input-container ic2">
+      <input
+        id="lastname"
+        class="input"
+        name="password"
+        type="password"
+        placeholder=" "
+      />
+      <div class="cut"></div>
+      <label for="lastname" class="placeholder">Password</label>
+    </div>
+    <button type="text" class="submit">submit</button>
+  </form>
+  <p class="verdict">{{verdict}}</p>
+</div>
+{% endblock %}
